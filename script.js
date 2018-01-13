@@ -1,9 +1,15 @@
 var button = document.getElementById('get-joke');
 var paragraph = document.getElementById('joke');
 
-button.addEventListener('click', joke);
+button.addEventListener('click', function() {
+  joke(function(response) {
+    paragraph.innerHTML = response
+  });
+});
 
-joke();
+joke(function(response) {
+  paragraph.innerHTML = response
+});
 
 function getJokeFrom(url) {
   var xhr = new XMLHttpRequest();
@@ -15,11 +21,8 @@ function getJokeFrom(url) {
     });
     xhr.send();
   }
-
 }
 
-function joke() {
-  return getJokeFrom('http://api.icndb.com/jokes/random')(function(response) {
-    paragraph.innerHTML = response
-  })
+function joke(cb) {
+  getJokeFrom('http://api.icndb.com/jokes/random')(cb);
 }
