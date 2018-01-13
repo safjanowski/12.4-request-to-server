@@ -4,21 +4,24 @@ var button = document.getElementById('get-joke');
 var paragraph = document.getElementById('joke');
 
 button.addEventListener('click', function() {
-  joke();
+  joke(function(response) {
+    paragraph.innerHTML = response
+  });
 });
 
 function getJokeFrom(url) {
   var xhr = new XMLHttpRequest();
 
-  return function() {
+  return function(cb) {
     xhr.open('GET', url);
     xhr.addEventListener('load', function() {
-      var response = JSON.parse(xhr.response);
-      paragraph.innerHTML = response.value.joke;
+      cb(JSON.parse(xhr.response).value.joke)
     });
     xhr.send();
   }
 
 }
 
-joke();
+joke(function(response) {
+  paragraph.innerHTML = response
+});
